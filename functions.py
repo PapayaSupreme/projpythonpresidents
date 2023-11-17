@@ -98,3 +98,20 @@ def refine_files(directory):
                     f2.write(letter)
     f.close()
     f2.close()
+
+def count_words(filename, directory):
+    """Counts in a dictionary the number of words in each file of the file.
+    Parameters:
+        directory (str): the directory where the text files are stored
+    Returns:
+        wordCount (dict): dictionary with the number of each word in the file"""
+    wordCount = {}
+    f = open(directory + "\clean" + "\\" + "refined" + filename, "r")
+    for line in f:
+        for word in line.split():
+            if word in wordCount:
+                wordCount[word] += 1
+            else:
+                wordCount[word] = 1
+    f.close()
+    return wordCount
