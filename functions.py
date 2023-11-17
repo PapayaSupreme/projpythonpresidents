@@ -55,8 +55,8 @@ def clean_files(directory):
     if not os.path.isdir(directory + "\clean"):
         os.mkdir(directory + "\clean")
     for filename in os.listdir(directory + "\speeches"):
-        f = open(directory + "\speeches" + "\\" + filename, "r")
-        fw = open(directory + "\clean" + "\\" + filename, "w")
+        f = open(directory + "\speeches" + "\\" + filename, "r", encoding="utf-8")
+        fw = open(directory + "\clean" + "\\" + filename, "w", encoding="utf-8")
         for line in f:
             for letter in line:
                 if 65 <= ord(letter) <= 90:
@@ -74,8 +74,8 @@ def refine_files(directory):
     Returns:
         None"""
     for filename in os.listdir(directory + "\clean"):
-        f = open(directory + "\clean" + "\\" + filename, "r")
-        f2 = open(directory + "\clean" + "\\" + "refined" + filename, "w")
+        f = open(directory + "\clean" + "\\" + filename, "r", encoding="utf-8")
+        f2 = open(directory + "\clean" + "\\" + "refined" + filename, "w", encoding="utf-8")
         for line in f:
             for letter in line:
                 if ord(letter) == 339 or ord(letter) == 338:                    # oeOE
@@ -126,8 +126,9 @@ def count_words_total(directory):
         Returns:
             totWordCount (dict): dictionary with the number of each word of each file"""
     files_names = []
-    for filename in os.listdir(directory):
+    for filename in os.listdir(directory + "\clean"):
         files_names.append(filename)
+    print(files_names)
     totWordCount = {}
     for filename in files_names:
         wordCount = count_words(filename, directory)
