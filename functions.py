@@ -99,10 +99,12 @@ def refine_files(directory):
     f.close()
     f2.close()
 
+
 def count_words(filename, directory):
-    """Counts in a dictionary the number of words in each file of the file.
+    """Counts in a dictionary the number of words in the file.
     Parameters:
-        directory (str): the directory where the text files are stored
+        directory (str): the directory where the text file is stored
+        filename (str): the name of the file
     Returns:
         wordCount (dict): dictionary with the number of each word in the file"""
     wordCount = {}
@@ -115,3 +117,23 @@ def count_words(filename, directory):
                 wordCount[word] = 1
     f.close()
     return wordCount
+
+
+def count_words_total(directory):
+    """Counts in a dictionary the number of words in each file of the directory.
+        Parameters:
+            directory (str): the directory where the text files are stored
+        Returns:
+            totWordCount (dict): dictionary with the number of each word of each file"""
+    files_names = []
+    for filename in os.listdir(directory):
+        files_names.append(filename)
+    totWordCount = {}
+    for filename in files_names:
+        wordCount = count_words(filename, directory)
+        for word in wordCount:
+            if word in totWordCount:
+                totWordCount[word] += wordCount[word]
+            else:
+                totWordCount[word] = wordCount[word]
+    return totWordCount
