@@ -1,7 +1,6 @@
 # Importing libraries
 
 import os
-import unidecode
 
 # Functions
 def pres_names(directory, extension):
