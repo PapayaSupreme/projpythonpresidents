@@ -97,7 +97,8 @@ def refine_files(directory):
                 elif 97 <= ord(letter) <= 122 or ord(letter) == 32 or 48 <= ord(letter) <= 57:
                     f2.write(letter)
     f.close()
-    f2.close()
+    f2.close()      #just reopen cleaned file as w to delete the previous content and
+    # replace it by refined then delete refine ez
 
 
 def count_words(filename, directory):
