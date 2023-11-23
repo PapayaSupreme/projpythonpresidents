@@ -74,28 +74,37 @@ def refine_files(directory):
     Returns:
         None"""
     for filename in os.listdir(directory + "\clean"):
-        f = open(directory + "\clean" + "\\" + filename, "r", encoding="utf-8")
-        f2 = open(directory + "\clean" + "\\" + "refined" + filename, "w", encoding="utf-8")
+        f = open(directory + "\clean" + "\\" + filename, "r", encoding = "utf-8")
+        f2 = open(directory + "\clean" + "\\" + "refined" + filename, "w", encoding = "utf-8")
         for line in f:
             for letter in line:
-                if ord(letter) == 339 or ord(letter) == 338:                    # oeOE
+                if ord(letter) == 339 or ord(letter) == 338:                    #oeOE
                     f2.write("oe")
-                elif 192 <= ord(letter) <= 197 or 224 <= ord(letter) <= 229:     # Aa
+                elif 192<= ord(letter) <= 197 or 224 <= ord(letter) <= 229:     #Aa
                     f2.write("a")
-                elif ord(letter) == 199 or ord(letter) == 231:                  # Cc
+                elif ord(letter) == 199 or ord(letter) == 231:                  #Cc
                     f2.write("c")
-                elif 200 <= ord(letter) <= 203 or 232 <= ord(letter) <= 235:      # Ee
+                elif 200<=ord(letter) <= 203 or 232 <= ord(letter) <= 235:      #Ee
                     f2.write("e")
-                elif 204 <= ord(letter) <= 207 or 236 <= ord(letter) <= 239:      # Ii
+                elif 204<=ord(letter) <= 207 or 236 <= ord(letter) <= 239:      #Ii
                     f2.write("i")
-                elif 210 <= ord(letter) <= 214 or 242 <= ord(letter) <= 246:      # Oo
+                elif 210<=ord(letter) <= 214 or 242 <= ord(letter) <= 246:      #Oo
                     f2.write("o")
-                elif 217 <= ord(letter) <= 220 or 249 <= ord(letter) <= 252:      # Uu
+                elif 217<=ord(letter) <= 220 or 249 <= ord(letter) <= 252:      #Uu
                     f2.write("u")
                 if letter == "'" or letter == "’" or letter == "-" or letter == ".":
                     f2.write(" ")
                 elif 97 <= ord(letter) <= 122 or ord(letter) == 32 or 48 <= ord(letter) <= 57:
                     f2.write(letter)
+        f.close()
+        f2.close()      #close the files
+        f = open(directory + "\clean" + "\\" + filename, "w", encoding="utf-8")
+        f2 = open(directory + "\clean" + "\\" + "refined" + filename, "r", encoding="utf-8")
+        for line in f2:
+            f.write(line)
+        f.close()
+        f2.close()
+        os.remove(directory + "\clean" + "\\" + "refined" + filename)
     f.close()
     f2.close()      #just reopen cleaned file as w to delete the previous content and
     # replace it by refined then delete refine ez
