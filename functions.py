@@ -1,6 +1,6 @@
 # Importing libraries
 
-import os
+import os, math
 
 
 # Functions
@@ -118,7 +118,7 @@ def count_words(filename, directory):
     Returns:
         wordCount (dict): dictionary with the number of each word in the file"""
     wordCount = {}
-    f = open(directory + "\clean" + "\\" + "refined" + filename, "r")
+    f = open(directory + "\clean" + "\\" + filename, "r")
     for line in f:
         for word in line.split():
             if word in wordCount:
@@ -138,7 +138,6 @@ def count_words_total(directory):
     files_names = []
     for filename in os.listdir(directory + "\clean"):
         files_names.append(filename)
-    print(files_names)
     totWordCount = {}
     for filename in files_names:
         wordCount = count_words(filename, directory)
@@ -148,3 +147,16 @@ def count_words_total(directory):
             else:
                 totWordCount[word] = wordCount[word]
     return totWordCount
+
+def count_idf(directory):
+    idfTotWordCount = count_words_total(directory)
+    for word in idfTotWordCount:
+        occ = {}
+        for filename in os.listdir(directory + "\clean"):
+            if word in count_words(filename, directory):
+                if word in occ:
+                    occ[word] += 1
+                else:
+                    occ[word] = 1
+        idfTotWordCount[word] = math.log(1/occ[word])
+

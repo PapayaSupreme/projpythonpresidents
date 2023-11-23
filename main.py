@@ -9,5 +9,6 @@ if __name__ == "__main__":
     #print(names)
     clean_files(directory)
     refine_files(directory)
-    #print(count_words("refinedNomination_Giscard dEstaing.txt", directory))
+    #print(count_words("Nomination_Giscard dEstaing.txt", directory))
     #print(count_words_total(directory))
+    print(count_idf(directory))
