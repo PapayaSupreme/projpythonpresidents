@@ -1,6 +1,7 @@
 # Importing libraries
 
-import os, math
+from os import listdir, path, mkdir, remove, getcwd
+from math import log
 
 
 # Functions
@@ -13,7 +14,7 @@ def pres_names(directory, extension):
         files_names (list): a list of the non duplicated names of text files.
     """
     files_names = []
-    for filename in os.listdir(directory):
+    for filename in listdir(directory):
         if not filename.endswith(extension):
             files_names.append(filename)
     return files_names
@@ -52,9 +53,9 @@ def clean_files(directory):
         directory (str): the directory where the text files are stored
     Returns:
         None"""
-    if not os.path.isdir(directory + "\clean"):
-        os.mkdir(directory + "\clean")
-    for filename in os.listdir(directory + "\speeches"):
+    if not path.isdir(directory + "\clean"):
+        mkdir(directory + "\clean")
+    for filename in listdir(directory + "\speeches"):
         f = open(directory + "\speeches" + "\\" + filename, "r", encoding="utf-8")
         fw = open(directory + "\clean" + "\\" + filename, "w", encoding="utf-8")
         for line in f:
@@ -73,7 +74,7 @@ def refine_files(directory):
         directory (str): the directory where the text files are stored
     Returns:
         None"""
-    for filename in os.listdir(directory + "\clean"):
+    for filename in listdir(directory + "\clean"):
         f = open(directory + "\clean" + "\\" + filename, "r", encoding = "utf-8")
         f2 = open(directory + "\clean" + "\\" + "refined" + filename, "w", encoding = "utf-8")
         for line in f:
@@ -98,7 +99,7 @@ def refine_files(directory):
                     f2.write(letter)
         f.close()
         f2.close()      #close the files
-        os.remove(directory + "\clean" + "\\" + filename)
+        remove(directory + "\clean" + "\\" + filename)
 
 
 def count_words(filename, directory):
@@ -127,7 +128,7 @@ def count_words_total(directory):
         Returns:
             totWordCount (dict): dictionary with the number of each word of each file"""
     files_names = []
-    for filename in os.listdir(directory + "\clean"):
+    for filename in listdir(directory + "\clean"):
         files_names.append(filename)
     totWordCount = {}
     for filename in files_names:
@@ -139,11 +140,12 @@ def count_words_total(directory):
                 totWordCount[word] = wordCount[word]
     return totWordCount
 
+
 def count_idf(directory):
     idfTotWordCount = count_words_total(directory)
     occ = {}
     files_names = []
-    for filename in os.listdir(directory + "\clean"):
+    for filename in listdir(directory + "\clean"):
         files_names.append(filename)
     for word in idfTotWordCount:
         for filename in files_names:
@@ -152,5 +154,14 @@ def count_idf(directory):
                     occ[word] += 1
                 else:
                     occ[word] = 1
-        idfTotWordCount[word] = math.log(1/occ[word])
+        idfTotWordCount[word] = log(1/occ[word])
     return idfTotWordCount
+
+
+def highest_idf(directory):
+    idfTotWordCount = count_idf(directory)
+    temp = idfTotWordCount[max(idfTotWordCount)]
+    print(temp)
+    test = [i for i, j in idfTotWordCount.items() if j == temp]
+    """for words in test:
+        print(words, idfTotWordCount[words])"""
