@@ -98,16 +98,7 @@ def refine_files(directory):
                     f2.write(letter)
         f.close()
         f2.close()      #close the files
-        f = open(directory + "\clean" + "\\" + filename, "w", encoding="utf-8")
-        f2 = open(directory + "\clean" + "\\" + "refined" + filename, "r", encoding="utf-8")
-        for line in f2:
-            f.write(line)
-        f.close()
-        f2.close()
-        os.remove(directory + "\clean" + "\\" + "refined" + filename)
-    f.close()
-    f2.close()      #just reopen cleaned file as w to delete the previous content and
-    # replace it by refined then delete refine ez
+        os.remove(directory + "\clean" + "\\" + filename)
 
 
 def count_words(filename, directory):
