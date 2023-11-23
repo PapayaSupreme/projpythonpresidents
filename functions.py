@@ -150,13 +150,16 @@ def count_words_total(directory):
 
 def count_idf(directory):
     idfTotWordCount = count_words_total(directory)
+    occ = {}
+    files_names = []
+    for filename in os.listdir(directory + "\clean"):
+        files_names.append(filename)
     for word in idfTotWordCount:
-        occ = {}
-        for filename in os.listdir(directory + "\clean"):
+        for filename in files_names:
             if word in count_words(filename, directory):
                 if word in occ:
                     occ[word] += 1
                 else:
                     occ[word] = 1
         idfTotWordCount[word] = math.log(1/occ[word])
-
+    return idfTotWordCount
