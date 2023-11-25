@@ -142,6 +142,11 @@ def count_words_total(directory):
 
 
 def count_idf(directory):
+    """Calculates the logarithm of the inverse of the number of times the words have been used.
+        Parameters:
+            directory (str): the directory where the text files are stored
+        Returns:
+            idfTotWordCount : log of the inverse of the number of each word in each file"""
     idfTotWordCount = count_words_total(directory)
     occ = {}
     files_names = []
@@ -159,6 +164,11 @@ def count_idf(directory):
 
 
 def highest_idf(directory):
+    """Indicates the words with the highest idf score (how much times that they have been used).
+    Parameters:
+        ""directory (str): the directory where the text files are stored
+    Returns:
+        None"""
     idfTotWordCount = count_idf(directory)
     temp = idfTotWordCount[max(idfTotWordCount)]
     print(temp)
