@@ -7,18 +7,10 @@ if __name__ == "__main__":
     names = names(files_names)                #list of presidents names
     #print(pres_names(directorysp,"2.txt"))
     #print(names)
-<<<<<<< Updated upstream
     if not path.isdir(directory + "\clean"):
         clean_files(directory)
         refine_files(directory)
-    #print(count_words("Nomination_Giscard dEstaing.txt", directory))
-    #print(count_words_total(directory))
-    #print(count_idf(directory))
-    highest_idf(directory)
-=======
-    clean_files(directory)
-    refine_files(directory)
     #print(count_words("refinedNomination_Giscard dEstaing.txt", directory))
-    print(count_words_total(directory))
-
->>>>>>> Stashed changes
+    #print(count_words_total(directory))
+    print(count_idf(directory))
+    #highest_idf(directory)
