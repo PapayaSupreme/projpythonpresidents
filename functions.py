@@ -93,14 +93,14 @@ def refine_files(directory):
 
 
 def count_words(filename, directory):
-    """Counts in a dictionary the number of occurrences of every word in the file.
+    """Counts in a dictionary the number of occurrences of every word in the file (tf).
     Parameters:
         directory (str): the directory where the text file is stored
         filename (str): the name of the file
     Returns:
         wordCount (dict): dictionary with the number of occurrences of every word in the file"""
     wordCount = {}
-    f = open(directory + "\clean" + "\\" + filename, "r")
+    f = open(directory + "\clean" + "\\" + filename, "r", encoding="utf-8")
     for line in f:
         for word in line.split():
             if word in wordCount:
@@ -112,7 +112,7 @@ def count_words(filename, directory):
 
 
 def count_words_total(directory):
-    """Counts in a dictionary the number of words in all the files.
+    """Counts in a dictionary the number of words in all the files (tf).
         Parameters:
             directory (str): the directory where the text file folder "clean" is stored
         Returns:
@@ -154,15 +154,13 @@ def count_idf(directory):
 
 
 def highest_idf(directory):
-    """Indicates the words with the highest idf score (how much times that they have been used).
+    """Indicates the words with the highest idf score.
         Parameters:
             directory (str): the directory where the text files are stored
         Returns:
             None"""
     idfTotWordCount = count_idf(directory)
-    temp = idfTotWordCount[max(idfTotWordCount)]
-    print(temp)
-    test = [i for i, j in idfTotWordCount.items() if j == temp]
-    print(test)
-    """for words in test:
-        print(words, idfTotWordCount[words])"""
+    temp = max(idfTotWordCount.values())
+    for i, j in idfTotWordCount.items():
+        if temp == j:
+            print(i)
