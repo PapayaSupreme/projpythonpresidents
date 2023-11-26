@@ -90,16 +90,15 @@ def refine_files(directory):
         f.close()
         f2.close()      #close the files
         remove(directory + "\clean" + "\\" + filename)
-        #"""elif 97 <= ord(letter) <= 122 or ord(letter) == 32 or 48 <= ord(letter) <= 57:"""
 
 
 def count_words(filename, directory):
-    """Counts in a dictionary the number of words in the file.
+    """Counts in a dictionary the number of occurrences of every word in the file.
     Parameters:
         directory (str): the directory where the text file is stored
         filename (str): the name of the file
     Returns:
-        wordCount (dict): dictionary with the number of each word in the file"""
+        wordCount (dict): dictionary with the number of occurrences of every word in the file"""
     wordCount = {}
     f = open(directory + "\clean" + "\\" + filename, "r")
     for line in f:
@@ -113,11 +112,11 @@ def count_words(filename, directory):
 
 
 def count_words_total(directory):
-    """Counts in a dictionary the number of words in each file of the directory.
+    """Counts in a dictionary the number of words in all the files.
         Parameters:
-            directory (str): the directory where the text files are stored
+            directory (str): the directory where the text file folder "clean" is stored
         Returns:
-            totWordCount (dict): dictionary with the number of each word of each file"""
+            totWordCount (dict): number of occurrences of every word of each file"""
     files_names = []
     for filename in listdir(directory + "\clean"):
         files_names.append(filename)
@@ -133,11 +132,11 @@ def count_words_total(directory):
 
 
 def count_idf(directory):
-    """Calculates the logarithm of the inverse of the number of times the words have been used.
+    """Calculates the logarithm of the inverse of the number of speeches in which the words have been used.
         Parameters:
-            directory (str): the directory where the text files are stored
+            directory (str): the directory where the programs and the text file folder "clean" is stored
         Returns:
-            idfTotWordCount : log of the inverse of the number of each word in each file"""
+            idfTotWordCount (dict): log of the inverse of the number of each word in each file"""
     idfTotWordCount = count_words_total(directory)
     occ = {}
     files_names = []
