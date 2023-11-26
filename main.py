@@ -2,15 +2,95 @@ from functions import *
 
 if __name__ == "__main__":
     directory = getcwd()
-    directorysp = directory + "/speeches"
-    files_names = pres_names(directorysp,"2.txt")     #raw list of speeches names
-    names = names(files_names)                #list of presidents names
-    #print(pres_names(directorysp,"2.txt"))
-    #print(names)
-    if not path.isdir(directory + "\clean"):
+    countIdf = count_idf(directory)             # heavy function so alr called here
+    if not path.isdir(directory + "\clean"):        # if clean folder doesn't exist, create it
         clean_files(directory)
         refine_files(directory)
-    #print(count_words("refinedNomination_Giscard dEstaing.txt", directory))
-    #print(count_words_total(directory))
-    #print(count_idf(directory))
-    highest_idf(directory)
+    files_names = pres_names(directory + "/speeches")  # raw list of speeches names
+    print("Welcome to the French Presidents' Speeches Analysis Program!")
+    print("You can choose between the following options:")
+    print("1. Display the names of the studied presidents")
+    print("2. Display all the words used in speeches and their count")
+    print("3. Display the idf score of the words used by presidents")
+    print("4. Display the least important words in all speeches")
+    print("5. Display the most important words in all speeches")
+    print("6. Display the most used words in all speeches")
+    print("7. Display the most used words in a specific speech")
+    print("8. Display the speeches that contain a specific word")
+    print("9. Display the first speeches to talk about a specific topic")
+    print("10. Exit the program")
+    choice = input("Please enter the number of the option you want to choose: ")
+    while choice != "10":
+        if choice == "1":
+            print("Sure ! Here are the names of the presidents:")
+            temp = names(pres_names(directory + "/speeches"))
+            for name in temp:
+                print(name)
+        elif choice == "2":
+            print("Sure ! Here all the words said by presidents:")
+            print(count_words_total(directory))
+        elif choice == "3":
+            print("Sure ! Here are the idf of the words used by presidents:")
+            print(countIdf)
+        elif choice == "4":
+            print("Sure ! Here are the least important words in all speeches:")
+            lowest_td_idf(directory, countIdf)
+            print("These words are not important, meaning that their tf-idf "
+                  "score is 0!")
+        elif choice == "5":
+            print("Sure ! Here are the most important words in all speeches:")
+            highest_td_idf(directory, countIdf)
+            print("These words are important because they are used in only one speech !")
+        elif choice == "6":
+            print("Sure ! Here are the most used words in all speeches:")
+            temp = max(count_words_total(directory).values())
+            for i, j in count_words_total(directory).items():
+                if temp == j:
+                    print(i, ":", j)
+        elif choice == "7":
+            print("Sure ! Here are the most used words in a specific speech:")
+            print("Here are the names of the speeches:")
+            for filename in listdir(directory + "\clean"):
+                print(filename)
+            filename = input("Please enter the name of the speech you want to analyze: ")
+            print("Here are the most used words in the speech", filename, ":")
+            temp = max(count_words(filename, directory).values())
+            for i, j in count_words(filename, directory).items():
+                if temp == j:
+                    print(i, ":", j)
+        elif choice == "8":
+            print("Sure ! Here are the presidents who told a specific word:")
+            word = input("Please enter the word you want to search: ")
+            print("Here are the speeches that contain the word", word, ":")
+            for filename in listdir(directory + "\clean"):
+                if word in count_words(filename, directory):
+                    print(filename)
+        elif choice == "9":
+            print("Sure ! Here is the first speech to talk about a specific topic:")
+            word = input("Please enter the word you want to search: ")
+            print("Here is the speech that contained the word", word, "the first :")
+            for filename in listdir(directory + "\clean"):
+                if word in count_words(filename, directory):
+                    print(filename)
+                    break
+        else:
+            print("Sorry, this is not a valid option.")
+        choice = input("Please enter the number of the option you want to choose: ")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

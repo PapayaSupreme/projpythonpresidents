@@ -5,18 +5,16 @@ from math import log
 
 
 # Functions
-def pres_names(directory, extension):
+def pres_names(directory):
     """Returns a list of the non duplicated names of text files.
     Parameters:
         directory (str): the directory where the text files are stored
-        extension (str): the extension of the text files and the number to exclude.
     Returns:
         files_names (list): a list of the non duplicated names of text files.
     """
     files_names = []
     for filename in listdir(directory):
-        if not filename.endswith(extension):
-            files_names.append(filename)
+        files_names.append(filename)
     return files_names
 
 
@@ -31,6 +29,8 @@ def names(files_names):
         names.append(name[11:-4])
         if "1" in names[-1]:
             names[-1] = names[-1][:-1]
+        elif "2" in names[-1]:
+            names.pop(-1)
     for i in range(len(names)):
         if "Chirac" in names[i]:
             names[i] = "Jacques " + names[i]
@@ -149,18 +149,87 @@ def count_idf(directory):
                     occ[word] += 1
                 else:
                     occ[word] = 1
-        idfTotWordCount[word] = log(1/occ[word])
+        idfTotWordCount[word] = log(len(files_names)/occ[word])
     return idfTotWordCount
 
 
-def highest_idf(directory):
-    """Indicates the words with the highest idf score.
+def highest_td_idf(directory, countIdf):
+    """Indicates the words with the highest td_idf score.
         Parameters:
             directory (str): the directory where the text files are stored
         Returns:
             None"""
-    idfTotWordCount = count_idf(directory)
-    temp = max(idfTotWordCount.values())
-    for i, j in idfTotWordCount.items():
-        if temp == j:
-            print(i)
+    files_names, highest = [], []
+    for filename in listdir(directory + "\clean"):
+        files_names.append(filename)
+    for filename in files_names:
+        tdIdf = td_idf(directory, countIdf, filename)
+        temp = max(tdIdf.values())
+        for i, j in tdIdf.items():
+            if temp == j and i not in highest:
+                highest.append(i)
+    for i in highest:
+        print(i)
+
+def lowest_td_idf(directory, countIdf):
+    """Indicates the words with the lowest td_idf score.
+        Parameters:
+            directory (str): the directory where the text files are stored
+        Returns:
+            None"""
+    files_names, lowest = [], []
+    for filename in listdir(directory + "\clean"):
+        files_names.append(filename)
+    for filename in files_names:
+        tdIdf = td_idf(directory, countIdf, filename)
+        for i, j in tdIdf.items():
+            if j == 0.0 and i not in lowest:
+                lowest.append(i)
+    for i in lowest:
+        print(i)
+
+
+def td_idf(directory, countIdf, filename):
+    """Calculates the tf-idf score of each word in a file.
+        Parameters:
+            directory (str): the directory where the text files are stored
+            countIdf (dict): log of the inverse of the number of each word in each file
+            filename (str): the name of the file
+        Returns:
+            tdIdf (dict): the td-idf score of each word in the file"""
+    tdIdf = {}
+    wordCount = count_words(filename, directory)
+    for word in wordCount:
+        tdIdf[word] = wordCount[word] * countIdf[word]
+    return tdIdf
+
+"""def td_idf_matrix(directory):
+    Creates a matrix with as many columns as files and as many rows as unique words,
+        containing the tf-idf score of each word in each file.
+        Parameters:
+            directory (str): the directory where the text files are stored
+        Returns:
+            td_idf_matrix (list): the tf-idf score of each word in each file
+    totWordCount = count_words_total(directory)
+    tdIdfMatrix = [[0]] * len(totWordCount)
+    files_names = []
+    for filename in listdir(directory + "\clean"):
+        files_names.append(filename)
+    n = len(files_names)
+    i = 0
+    for key in totWordCount.keys():
+        tdIdfMatrix[i].append(key)
+        i+=1
+    return tdIdfMatri"""
+
+
+
+
+
+
+
+
+
+
+#modifier pres names pour quelle renvoie tous les noms et que names() se charge d'enlever les doublons
+#optimiser count_idf() c'est elle le probleme
