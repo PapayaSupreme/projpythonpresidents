@@ -79,27 +79,18 @@ def refine_files(directory):
         f2 = open(directory + "\clean" + "\\" + "refined" + filename, "w", encoding = "utf-8")
         for line in f:
             for letter in line:
-                if ord(letter) == 339 or ord(letter) == 338:                    #oeOE
-                    f2.write("oe")
-                elif 192<= ord(letter) <= 197 or 224 <= ord(letter) <= 229:     #Aa
-                    f2.write("a")
-                elif ord(letter) == 199 or ord(letter) == 231:                  #Cc
-                    f2.write("c")
-                elif 200<=ord(letter) <= 203 or 232 <= ord(letter) <= 235:      #Ee
-                    f2.write("e")
-                elif 204<=ord(letter) <= 207 or 236 <= ord(letter) <= 239:      #Ii
-                    f2.write("i")
-                elif 210<=ord(letter) <= 214 or 242 <= ord(letter) <= 246:      #Oo
-                    f2.write("o")
-                elif 217<=ord(letter) <= 220 or 249 <= ord(letter) <= 252:      #Uu
-                    f2.write("u")
-                if letter == "'" or letter == "’" or letter == "-" or letter == ".":
+                if (letter == "à" or letter == "â" or letter == "ç" or letter == "é" or letter == "è" or
+                        letter == "ê" or letter == "ë" or letter == "î" or letter == "ï" or letter == "ô" or
+                        letter == "ö" or letter == "ù" or letter == "û" or letter == "ü" or letter == "œ"):
+                    f2.write(letter)
+                elif letter == "'" or letter == "’" or letter == "-" or letter == ".":
                     f2.write(" ")
                 elif 97 <= ord(letter) <= 122 or ord(letter) == 32 or 48 <= ord(letter) <= 57:
                     f2.write(letter)
         f.close()
         f2.close()      #close the files
         remove(directory + "\clean" + "\\" + filename)
+        #"""elif 97 <= ord(letter) <= 122 or ord(letter) == 32 or 48 <= ord(letter) <= 57:"""
 
 
 def count_words(filename, directory):
@@ -110,14 +101,7 @@ def count_words(filename, directory):
     Returns:
         wordCount (dict): dictionary with the number of each word in the file"""
     wordCount = {}
-<<<<<<< Updated upstream
     f = open(directory + "\clean" + "\\" + filename, "r")
-=======
-    if "refined" in filename:
-        f = open(directory + "\clean" + "\\" + filename, "r")
-    else:
-        f = open(directory + "\clean" + "\\" + "refined" + filename, "r")
->>>>>>> Stashed changes
     for line in f:
         for word in line.split():
             if word in wordCount:
@@ -130,16 +114,12 @@ def count_words(filename, directory):
 
 def count_words_total(directory):
     """Counts in a dictionary the number of words in each file of the directory.
-    Parameters:
-        directory (str): the directory where the text files are stored
-    Returns:
-        totWordCount (dict): dictionary with the number of each word of each file"""
+        Parameters:
+            directory (str): the directory where the text files are stored
+        Returns:
+            totWordCount (dict): dictionary with the number of each word of each file"""
     files_names = []
-<<<<<<< Updated upstream
     for filename in listdir(directory + "\clean"):
-=======
-    for filename in os.listdir(directory+ "\clean"):
->>>>>>> Stashed changes
         files_names.append(filename)
     totWordCount = {}
     for filename in files_names:
@@ -154,10 +134,10 @@ def count_words_total(directory):
 
 def count_idf(directory):
     """Calculates the logarithm of the inverse of the number of times the words have been used.
-    Parameters:
-        directory (str): the directory where the text files are stored
-    Returns:
-        idfTotWordCount : log of the inverse of the number of each word in each file"""
+        Parameters:
+            directory (str): the directory where the text files are stored
+        Returns:
+            idfTotWordCount : log of the inverse of the number of each word in each file"""
     idfTotWordCount = count_words_total(directory)
     occ = {}
     files_names = []
@@ -176,13 +156,14 @@ def count_idf(directory):
 
 def highest_idf(directory):
     """Indicates the words with the highest idf score (how much times that they have been used).
-    Parameters:
-        directory (str): the directory where the text files are stored
-    Returns:
-        None"""
+        Parameters:
+            directory (str): the directory where the text files are stored
+        Returns:
+            None"""
     idfTotWordCount = count_idf(directory)
     temp = idfTotWordCount[max(idfTotWordCount)]
     print(temp)
     test = [i for i, j in idfTotWordCount.items() if j == temp]
+    print(test)
     """for words in test:
         print(words, idfTotWordCount[words])"""
