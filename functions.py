@@ -130,10 +130,10 @@ def count_words(filename, directory):
 
 def count_words_total(directory):
     """Counts in a dictionary the number of words in each file of the directory.
-        Parameters:
-            directory (str): the directory where the text files are stored
-        Returns:
-            totWordCount (dict): dictionary with the number of each word of each file"""
+    Parameters:
+        directory (str): the directory where the text files are stored
+    Returns:
+        totWordCount (dict): dictionary with the number of each word of each file"""
     files_names = []
 <<<<<<< Updated upstream
     for filename in listdir(directory + "\clean"):
@@ -154,10 +154,10 @@ def count_words_total(directory):
 
 def count_idf(directory):
     """Calculates the logarithm of the inverse of the number of times the words have been used.
-        Parameters:
-            directory (str): the directory where the text files are stored
-        Returns:
-            idfTotWordCount : log of the inverse of the number of each word in each file"""
+    Parameters:
+        directory (str): the directory where the text files are stored
+    Returns:
+        idfTotWordCount : log of the inverse of the number of each word in each file"""
     idfTotWordCount = count_words_total(directory)
     occ = {}
     files_names = []
