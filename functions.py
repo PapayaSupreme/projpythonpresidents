@@ -110,7 +110,14 @@ def count_words(filename, directory):
     Returns:
         wordCount (dict): dictionary with the number of each word in the file"""
     wordCount = {}
+<<<<<<< Updated upstream
     f = open(directory + "\clean" + "\\" + filename, "r")
+=======
+    if "refined" in filename:
+        f = open(directory + "\clean" + "\\" + filename, "r")
+    else:
+        f = open(directory + "\clean" + "\\" + "refined" + filename, "r")
+>>>>>>> Stashed changes
     for line in f:
         for word in line.split():
             if word in wordCount:
@@ -128,7 +135,11 @@ def count_words_total(directory):
         Returns:
             totWordCount (dict): dictionary with the number of each word of each file"""
     files_names = []
+<<<<<<< Updated upstream
     for filename in listdir(directory + "\clean"):
+=======
+    for filename in os.listdir(directory+ "\clean"):
+>>>>>>> Stashed changes
         files_names.append(filename)
     totWordCount = {}
     for filename in files_names:
@@ -166,7 +177,7 @@ def count_idf(directory):
 def highest_idf(directory):
     """Indicates the words with the highest idf score (how much times that they have been used).
     Parameters:
-        ""directory (str): the directory where the text files are stored
+        directory (str): the directory where the text files are stored
     Returns:
         None"""
     idfTotWordCount = count_idf(directory)
