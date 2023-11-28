@@ -7,6 +7,18 @@ if __name__ == "__main__":
         clean_files(directory)
         refine_files(directory)
     files_names = pres_names(directory + "/speeches")  # raw list of speeches names
+    pres_dict = {}  # list of presidents names linked with their speeches filenames
+    for name in names(files_names):
+        pres_dict[name] = []
+    for filename in files_names:
+        for name in pres_dict:
+            temp = name
+            for i in range(len(temp)):
+                if temp[i] == " ":
+                    temp = temp[i+1:]
+                    break
+            if temp in filename:
+                pres_dict[name].append(filename)
     print("Welcome to the French Presidents' Speeches Analysis Program!")
     print("You can choose between the following options:")
     print("1. Display the names of the studied presidents")
@@ -62,9 +74,17 @@ if __name__ == "__main__":
             print("Sure ! Here are the presidents who told a specific word:")
             word = input("Please enter the word you want to search: ")
             print("Here are the speeches that contain the word", word, ":")
+            temp,temp2 = [],[]
             for filename in listdir(directory + "\clean"):
                 if word in count_words(filename, directory):
-                    print(filename)
+                    temp.append(filename)
+            for i, j in pres_dict.items():
+                for k in j:
+                    for cell in temp:
+                        if k in cell and i not in temp2:
+                            temp2.append(i)
+            for cell in temp2:
+                print(cell)
         elif choice == "9":
             print("Sure ! Here is the first speech to talk about a specific topic:")
             word = input("Please enter the word you want to search: ")
