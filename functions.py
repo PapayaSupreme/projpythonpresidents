@@ -231,5 +231,5 @@ def td_idf(directory, countIdf, filename):
 
 
 
-#modifier pres names pour quelle renvoie tous les noms et que names() se charge d'enlever les doublons
+#modifier pres names pour qu'elle renvoie tous les noms et que names() se charge d'enlever les doublons
 #optimiser count_idf() c'est elle le probleme

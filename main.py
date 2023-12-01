@@ -19,7 +19,7 @@ if __name__ == "__main__":
                     break
             if temp in filename:
                 pres_dict[name].append(filename)
-    print(pres_dict)
+
     print("Welcome to the French Presidents' Speeches Analysis Program!")
     print("You can choose between the following options:")
     print("1. Display the names of the studied presidents")
@@ -40,7 +40,7 @@ if __name__ == "__main__":
             for name in temp:
                 print(name)
         elif choice == "2":
-            print("Sure ! Here all the words said by presidents:")
+            print("Sure ! Here are all the words said by presidents:")
             print(count_words_total(directory))
         elif choice == "3":
             print("Sure ! Here are the idf of the words used by presidents:")
