@@ -19,6 +19,7 @@ if __name__ == "__main__":
                     break
             if temp in filename:
                 pres_dict[name].append(filename)
+    print(pres_dict)
     print("Welcome to the French Presidents' Speeches Analysis Program!")
     print("You can choose between the following options:")
     print("1. Display the names of the studied presidents")
@@ -73,7 +74,7 @@ if __name__ == "__main__":
         elif choice == "8":
             print("Sure ! Here are the presidents who told a specific word:")
             word = input("Please enter the word you want to search: ")
-            print("Here are the speeches that contain the word", word, ":")
+            print("Here are the president that told the word ", word, ":")
             temp,temp2 = [],[]
             for filename in listdir(directory + "\clean"):
                 if word in count_words(filename, directory):
@@ -88,11 +89,14 @@ if __name__ == "__main__":
         elif choice == "9":
             print("Sure ! Here is the first speech to talk about a specific topic:")
             word = input("Please enter the word you want to search: ")
-            print("Here is the speech that contained the word", word, "the first :")
+            print("Here is the president that contained that talked about", word, "the first :")
             for filename in listdir(directory + "\clean"):
                 if word in count_words(filename, directory):
-                    print(filename)
-                    break
+                    for i, j in pres_dict.items():
+                        for k in j:
+                            if k in filename:
+                                print(i)
+                                break
         else:
             print("Sorry, this is not a valid option.")
         choice = input("Please enter the number of the option you want to choose: ")
