@@ -2,7 +2,10 @@ from functions import *
 
 if __name__ == "__main__":
     directory = getcwd()
-    countIdf = count_idf(directory)             # heavy function so alr called here
+    countIdf = count_idf(directory)
+    e = td_idf_matrix(directory, countIdf)
+    """for cell in e:
+        print(cell)"""
     if not path.isdir(directory + "\clean"):        # if clean folder doesn't exist, create it
         clean_files(directory)
         refine_files(directory)

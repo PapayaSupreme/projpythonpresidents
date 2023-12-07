@@ -137,21 +137,20 @@ def count_idf(directory):
             directory (str): the directory where the programs and the text file folder "clean" is stored
         Returns:
             idfTotWordCount (dict): log of the inverse of the number of each word in each file"""
-    idfTotWordCount = count_words_total(directory)
-    occ = {}
     files_names = []
     for filename in listdir(directory + "\clean"):
         files_names.append(filename)
+    idfTotWordCount = {}
+    for filename in files_names:
+        wordCount = count_words(filename, directory)
+        for word in wordCount:
+            if word in idfTotWordCount:
+                idfTotWordCount[word] += 1
+            else:
+                idfTotWordCount[word] = 1
     for word in idfTotWordCount:
-        for filename in files_names:
-            if word in count_words(filename, directory):
-                if word in occ:
-                    occ[word] += 1
-                else:
-                    occ[word] = 1
-        idfTotWordCount[word] = log(len(files_names)/occ[word])
+        idfTotWordCount[word] = log(8 / idfTotWordCount[word], 10)
     return idfTotWordCount
-
 
 def highest_td_idf(directory, countIdf):
     """Indicates the words with the highest td_idf score.
@@ -203,25 +202,44 @@ def td_idf(directory, countIdf, filename):
         tdIdf[word] = wordCount[word] * countIdf[word]
     return tdIdf
 
-"""def td_idf_matrix(directory):
-    Creates a matrix with as many columns as files and as many rows as unique words,
+
+def td_idf_matrix(directory, countIdf):
+    """Creates a matrix with as many columns as files and as many rows as unique words,
         containing the tf-idf score of each word in each file.
         Parameters:
             directory (str): the directory where the text files are stored
         Returns:
-            td_idf_matrix (list): the tf-idf score of each word in each file
-    totWordCount = count_words_total(directory)
-    tdIdfMatrix = [[0]] * len(totWordCount)
+            td_idf_matrix (list): the tf-idf score of each word in each file"""
+
+    tdIdfMatrix = [[0]*8] * 1685
     files_names = []
     for filename in listdir(directory + "\clean"):
         files_names.append(filename)
-    n = len(files_names)
-    i = 0
-    for key in totWordCount.keys():
-        tdIdfMatrix[i].append(key)
-        i+=1
-    return tdIdfMatri"""
+    listepitie = list(count_words_total(directory).keys())
+    for j in range(1685):
+        for i in range(8):
+            tdidf = td_idf(directory, countIdf, files_names[i])
+            print(tdidf)
+            if listepitie[j] in count_words(files_names[i], directory):
+                tdIdfMatrix[j][i] = round(tdidf[listepitie[j]],2)
+    return tdIdfMatrix
 
+def tokenQuestion(question):
+    """Transforms the question into a list of words.
+        Parameters:
+            question (str): the question asked by the user
+        Returns:
+            question (list): the question asked by the user"""
+    question = question.lower()
+    question = question.replace("?", "")
+    question = question.replace("!", "")
+    question = question.replace(".", "")
+    question = question.replace(",", "")
+    question = question.replace("'", " ")
+    question = question.replace("-", " ")
+    question = question.replace("’", " ")
+    question = question.split()
+    return question
 
 
 
