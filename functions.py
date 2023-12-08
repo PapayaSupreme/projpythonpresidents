@@ -143,13 +143,16 @@ def count_idf(directory):
     idfTotWordCount = {}
     for filename in files_names:
         wordCount = count_words(filename, directory)
+        #print(wordCount)
         for word in wordCount:
             if word in idfTotWordCount:
                 idfTotWordCount[word] += 1
             else:
                 idfTotWordCount[word] = 1
+    #print(idfTotWordCount)
     for word in idfTotWordCount:
-        idfTotWordCount[word] = log(8 / idfTotWordCount[word], 10)
+        temp = idfTotWordCount[word]
+        idfTotWordCount[word] = log(8 / temp, 10)
     return idfTotWordCount
 
 def highest_td_idf(directory, countIdf):
@@ -211,17 +214,43 @@ def td_idf_matrix(directory, countIdf):
         Returns:
             td_idf_matrix (list): the tf-idf score of each word in each file"""
 
-    tdIdfMatrix = [[0]*8] * 1685
-    files_names = []
+    tdIdfMatrix = [[0.0]*8] * 1685
+    files_names,tdidf,words = [],[],[]
     for filename in listdir(directory + "\clean"):
         files_names.append(filename)
-    listepitie = list(count_words_total(directory).keys())
-    for j in range(1685):
-        for i in range(8):
-            tdidf = td_idf(directory, countIdf, files_names[i])
-            print(tdidf)
-            if listepitie[j] in count_words(files_names[i], directory):
-                tdIdfMatrix[j][i] = round(tdidf[listepitie[j]],2)
+    print(files_names)
+    for i in range(8):
+        tdidf.append(td_idf(directory, countIdf, files_names[i]))
+        print(tdidf[i])
+        words.append(count_words(files_names[i], directory))
+
+    listepitie = count_words_total(directory)
+    """print(words[0])
+    print("WORDS")"""
+    #print(tdidf[2])
+    #print("TDIDF")
+    #print(listepitie["messieurs"], "LISTEPITIE")
+    #print(len(listepitie), "LEN LISTEPITIE")
+    #print("messieurs" in words[0], "VERIF")
+    #print(tdidf[2]["messieurs"], "TDIDF AHHH")
+    k =0
+    for j in listepitie:       #nb of words in corpus
+        print("j=",j)
+        for i in range(8):  #nb of speeches
+            print("i=", i)
+            print("w i",words[i])
+            if j in words[i]:   #if the word is in the speech
+                print("j in words[i]")
+                tdIdfMatrix[k][i] = round(tdidf[i][j],2)
+                print(tdIdfMatrix[k][i])
+            # j =="messieurs" and k == 0:"""
+                print(tdidf[i][j])
+                #print(tdIdfMatrix[k][i])
+        print(tdIdfMatrix[i])
+        k += 1
+    #print("**********")
+    """print(tdIdfMatrix)
+    print("**********")"""
     return tdIdfMatrix
 
 def tokenQuestion(question):
@@ -241,7 +270,13 @@ def tokenQuestion(question):
     question = question.split()
     return question
 
-
+def wordinQ(directory,question):
+    words = count_words_total(directory)
+    commun = []
+    for cell in question:
+        if cell in words:
+            commun.append(cell)
+    return commun
 
 
 

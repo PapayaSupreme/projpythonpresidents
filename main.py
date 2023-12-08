@@ -3,9 +3,10 @@ from functions import *
 if __name__ == "__main__":
     directory = getcwd()
     countIdf = count_idf(directory)
-    e = td_idf_matrix(directory, countIdf)
+    #print(td_idf(directory, countIdf, "refinedNomination_Chirac1.txt"))
+    #e = td_idf_matrix(directory, countIdf)
     """for cell in e:
-        print(cell)"""
+        print(e)"""
     if not path.isdir(directory + "\clean"):        # if clean folder doesn't exist, create it
         clean_files(directory)
         refine_files(directory)
@@ -22,7 +23,7 @@ if __name__ == "__main__":
                     break
             if temp in filename:
                 pres_dict[name].append(filename)
-
+    print(wordinQ(directory, tokenQuestion("Ceci, est uN test. nation france monsieur.")))
     print("Welcome to the French Presidents' Speeches Analysis Program!")
     print("You can choose between the following options:")
     print("1. Display the names of the studied presidents")
