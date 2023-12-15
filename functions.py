@@ -19,11 +19,11 @@ def pres_names(directory):
 
 
 def names(files_names):
-    """Associates the president's last names to the first names.
+    """This function associates all the president's first names with their last names.
      Parameters:
-         files_names (list): a list of the non duplicated names of text files.
+         files_names (list): The list of the non_duplicated files.
     Returns:
-        names (list): a new list of the non duplicated names with the first names."""
+        names (list): The new list of the non-duplicated files with the last and first names of the presidents."""
     names = []
     for name in files_names:
         names.append(name[11:-4])
@@ -50,7 +50,7 @@ def names(files_names):
 def clean_files(directory):
     """Opens a folder, opens each file of the folder, and substitutes all the capital letters with lower case letters.
     Parameters:
-        directory (str): the directory where the text files are stored
+        directory (str): The directory where the text files are stored.
     Returns:
         None"""
     if not path.isdir(directory + "\clean"):
