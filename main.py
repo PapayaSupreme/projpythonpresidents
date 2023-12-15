@@ -2,11 +2,9 @@ from functions import *
 
 if __name__ == "__main__":
     directory = getcwd()
-    countIdf = count_idf(directory)
-    #print(td_idf(directory, countIdf, "refinedNomination_Chirac1.txt"))
+    countIdf = count_idf(directory)     #messieurs': 0.2041199826559248, 'les': 0.0, 'présidents': 0.6020599913279623, 'mesdames': 0.057991946977686726, 'en': 0.0, 'ce': 0.0,
+    #print(td_idf(directory, countIdf, "refinedNomination_Chirac1.txt"))             #td_idf : messieurs': 0.4082399653118496, 'les': 0.0, 'présidents': 0.6020599913279623, 'mesdames': 0.057991946977686726,
     #e = td_idf_matrix(directory, countIdf)
-    """for cell in e:
-        print(e)"""
     if not path.isdir(directory + "\clean"):        # if clean folder doesn't exist, create it
         clean_files(directory)
         refine_files(directory)
@@ -23,7 +21,8 @@ if __name__ == "__main__":
                     break
             if temp in filename:
                 pres_dict[name].append(filename)
-    print(wordinQ(directory, tokenQuestion("Ceci, est uN test. nation france monsieur.")))
+    print(similarity(directory,"Peux-tu me dire comment une nation "
+                        "peut-elle prendre soin du climat ?", countIdf))
     print("Welcome to the French Presidents' Speeches Analysis Program!")
     print("You can choose between the following options:")
     print("1. Display the names of the studied presidents")

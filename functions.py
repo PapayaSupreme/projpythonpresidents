@@ -214,44 +214,38 @@ def td_idf_matrix(directory, countIdf):
         Returns:
             td_idf_matrix (list): the tf-idf score of each word in each file"""
 
-    tdIdfMatrix = [[0.0]*8] * 1685
-    files_names,tdidf,words = [],[],[]
+    tdIdfMatrix = [[0.0]*8] * 1685      #works
+    files_names,words = [],[]
+    tdidf = [0]*8
+    temp = []
     for filename in listdir(directory + "\clean"):
-        files_names.append(filename)
-    print(files_names)
+        files_names.append(filename)        #['refinedNomination_Chirac1.txt', 'refinedNomination_Chirac2.txt',
     for i in range(8):
-        tdidf.append(td_idf(directory, countIdf, files_names[i]))
-        print(tdidf[i])
-        words.append(count_words(files_names[i], directory))
-
-    listepitie = count_words_total(directory)
-    """print(words[0])
-    print("WORDS")"""
+        tdidf[i] = (td_idf(directory, countIdf, files_names[i]))   #8 dict ina list for each tdidf
+        words.append(count_words(files_names[i], directory))        #8 dict ina list for each wordcount
+    for e in tdidf:
+        print(e)
+    listepitie = count_words_total(directory)              #dict of total wordcount
     #print(tdidf[2])
     #print("TDIDF")
     #print(listepitie["messieurs"], "LISTEPITIE")
     #print(len(listepitie), "LEN LISTEPITIE")
     #print("messieurs" in words[0], "VERIF")
     #print(tdidf[2]["messieurs"], "TDIDF AHHH")
-    k =0
-    for j in listepitie:       #nb of words in corpus
-        print("j=",j)
+    k =0        #going 0-1684
+    for j in listepitie:       #going through the whole corpus of words
         for i in range(8):  #nb of speeches
-            print("i=", i)
-            print("w i",words[i])
+            #print("i=", i)
+            #print("j = ", j)
+            #print(j in words[i])
             if j in words[i]:   #if the word is in the speech
-                print("j in words[i]")
                 tdIdfMatrix[k][i] = round(tdidf[i][j],2)
-                print(tdIdfMatrix[k][i])
-            # j =="messieurs" and k == 0:"""
-                print(tdidf[i][j])
-                #print(tdIdfMatrix[k][i])
-        print(tdIdfMatrix[i])
+                #print(round(tdidf[i][j],2), "tdidf[i][j]")
+        #print(tdIdfMatrix[k-1],"tdIdfMatrix[k], i & k= ", i, k)
+        print(tdIdfMatrix[k],"tdIdfMatrix[k], i & k= ", k)       #[0.25, 1.81, 0.3, 0.3, 0.3, 0.9, 0.3, 0.2] tdIdfMatrix[k], i & k=  7 489
+        temp.append(tdIdfMatrix[k])
         k += 1
-    #print("**********")
-    """print(tdIdfMatrix)
-    print("**********")"""
-    return tdIdfMatrix
+    return temp
 
 def tokenQuestion(question):
     """Transforms the question into a list of words.
@@ -271,18 +265,86 @@ def tokenQuestion(question):
     return question
 
 def wordinQ(directory,question):
+    """Returns the words that are in the question and in the corpus.
+        Parameters:
+            directory (str): the directory where the text files are stored
+            question (list): the question asked by the user
+        Returns:
+            commun (list): the words that are in the question and in the corpus"""
     words = count_words_total(directory)
     commun = []
-    for cell in question:
+    Tquestion = tokenQuestion(question)
+    for cell in Tquestion:
         if cell in words:
             commun.append(cell)
     return commun
 
+def tfidfQuestion(question, countIdf):
+    question = tokenQuestion(question)
+    tfQ = {}
+    for cell in question:
+        if cell in tfQ:
+            tfQ[cell] += 1
+        else:
+            tfQ[cell] = 1
 
+    for cell in tfQ:
+        if cell in countIdf:
+            tfQ[cell] = tfQ[cell]/len(question) * countIdf[cell]
+        else:
+            tfQ[cell] = 0
+    return tfQ
 
+def similarity(directory, question, countIdf):
+    """Calculates the cosine similarity between the question and each speech.
+        Parameters:
+            directory (str): the directory where the text files are stored
+            question (list): the question asked by the user
+            countIdf (dict): log of the inverse of the number of each word in each file
+        Returns:
+            similarity (list): the cosine similarity between the question and each speech"""
+    tfidfQ= tfidfQuestion(question, countIdf)
+    tdidfC=[0]*8
+    files_names = []
+    for filename in listdir(directory + "\clean"):
+        files_names.append(filename)
+    for i in range(8):
+        tdidfC[i] = (td_idf(directory, countIdf, files_names[i]))
+    """for e in tdidfC:
+        print(e)"""
+    matrix =
+    similarity = {}
+    for i in range(8):
+        similarity[files_names[i]] = cosine_similarity
+    return similarity
 
+def scalar_product(vectorA,vectorB):
+    """Returns the scalar product of the two vectors.
+        Parameters:
+            vectorA, vectorB (list): the two vectors
+        Returns:
+            scalar (float): the scalar product of the two vectors"""
+    scalar = 0
+    for i in range(len(vectorA)):
+        scalar += vectorA[i]*vectorB[i]
+    return scalar
 
+def norm(vector):
+    """Returns the norm of the vector.
+        Parameters:
+            vector (list): the vector
+        Returns:
+            norm (float): the norm of the vector"""
+    norm = 0
+    for i in range(len(vector)):
+        norm += vector[i]**2
+    return norm**(1/2)
 
-
-#modifier pres names pour qu'elle renvoie tous les noms et que names() se charge d'enlever les doublons
-#optimiser count_idf() c'est elle le probleme
+def cosine_similarity(vectorA, vectorB):
+    """Returns the cosine similarity between the two vectors.
+        Parameters:
+            vectorA, vectorB (list): the two vectors
+        Returns:
+            cosine (float): the cosine similarity between the two vectors"""
+    cosine = scalar_product(vectorA,vectorB)/(norm(vectorA)*norm(vectorB))
+    return cosine
