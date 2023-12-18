@@ -31,9 +31,10 @@ if __name__ == "__main__":
     print("8. Display the speeches that contain a specific word")
     print("9. Display the first speeches to talk about a specific topic")
     print("10. Ask another question")
-    print("11. Exit the program")
+    print("11. Count how much a word is said")
+    print("12. Exit the program")
     choice = input("Please enter the number of the option you want to choose: ")
-    while choice != "11":
+    while choice != "12":
         if choice == "1":
             print("Sure ! Here are the names of the presidents:")
             temp = names(pres_names(directory + "/speeches"))
@@ -41,10 +42,13 @@ if __name__ == "__main__":
                 print(name)
         elif choice == "2":
             print("Sure ! Here are all the words said by presidents:")
-            print(count_words_total(directory))
+            e = count_words_total(directory)
+            for i, j in e.items():
+                print(i, ":", j)
         elif choice == "3":
             print("Sure ! Here are the idf of the words used by presidents:")
-            print(countIdf)
+            for i, j in countIdf.items():
+                print(i, ":", j)
         elif choice == "4":
             print("Sure ! Here are the least important words in all speeches:")
             lowest = lowest_td_idf(directory, countIdf)
@@ -67,7 +71,11 @@ if __name__ == "__main__":
             print("Here are the names of the speeches:")
             for filename in listdir(directory + "\clean"):
                 print(filename)
-            filename = input("Please enter the name of the speech you want to analyze: ")
+            filename = ""
+            while filename not in listdir(directory + "\clean"):
+                filename = input("Please enter the name of the speech you want to analyze: ")
+                if filename not in listdir(directory + "\clean"):
+                    print("Sorry, this is not a valid option.")
             print("Here are the most used words in the speech", filename, ":")
             temp = max(count_words(filename, directory).values())
             for i, j in count_words(filename, directory).items():
@@ -76,8 +84,9 @@ if __name__ == "__main__":
         elif choice == "8":
             print("Sure ! Here are the presidents who told a specific word:")
             word = input("Please enter the word you want to search: ")
+            word = word.lower()
             print("Here are the president that told the word ", word, ":")
-            temp,temp2 = [],[]
+            temp, temp2 = [],[]
             for filename in listdir(directory + "\clean"):
                 if word in count_words(filename, directory):
                     temp.append(filename)
@@ -88,22 +97,38 @@ if __name__ == "__main__":
                             temp2.append(i)
             for cell in temp2:
                 print(cell)
+            if not temp2:
+                print("Sorry, no president told this word.")
         elif choice == "9":
             print("Sure ! Here is the first speech to talk about a specific topic:")
             word = input("Please enter the word you want to search: ")
+            word = word.lower()
             print("Here is the president that talked about", word, "the first :")
-            notyet = True
             test = []
             for filename in listdir(directory + "\clean"):
                 if word in count_words(filename, directory):
                     for i, j in pres_dict.items():
                         for k in j:
-                            if k in filename and notyet:
+                            if k in filename:
                                 test.append(i)
-            print(test[-1])
+            if not test:
+                print("Sorry, no president talked about this word.")
+            else:
+                print(test[-1])
         elif choice == "10":
             question = input("Sure ! Enter a question and i'll answer from the speeches !")
             choosefile(directory, question, countIdf)
+        elif choice == "11":
+            print("Sure ! Here is the number of times a word is said in all speeches:")
+            word = input("Please enter the word you want to search: ")
+            word = word.lower()
+            print("Here is the number of times the word", word, "is said in all speeches :", end=" ")
+            temp = count_words_total(directory)
+            if temp[word] == 0:
+                print()
+                print("Sorry, no president talked about this word.")
+            else:
+                print(temp[word])
         else:
             print("Sorry, this is not a valid option.")
         choice = input("Please enter the number of the option you want to choose: ")

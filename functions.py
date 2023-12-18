@@ -277,7 +277,7 @@ def choosefile(directory, question, countIdf):
     max = [0]
     maxname = [""]
     dangerous = ["quel", "plus", "que", "quel", "qui", "pourquoi", "comment", "ou", "quand", "plus", "president", "de",
-                 "du", "la", "parle", "l", "l'"]
+                 "du", "la", "parle", "l", "l'", "mentionne", "mentionner", "parle", "parler", "cela", "celui", "celle",]
     lowest = lowest_td_idf(directory, countIdf)
     for word in lowest:
         if word not in dangerous:
