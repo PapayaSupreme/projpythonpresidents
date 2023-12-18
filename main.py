@@ -6,6 +6,7 @@ if __name__ == "__main__":
         clean_files(directory)
         refine_files(directory)
     countIdf = count_idf(directory)
+    print(max(countIdf.values()))
     files_names = pres_names(directory + "/speeches")  # raw list of speeches names
     pres_dict = {}  # list of presidents names linked with their speeches filenames
     for name in names(files_names):
@@ -114,7 +115,7 @@ if __name__ == "__main__":
             if not test:
                 print("Sorry, no president talked about this word.")
             else:
-                print(test[-1])
+                print(test[0])
         elif choice == "10":
             question = input("Sure ! Enter a question and i'll answer from the speeches !")
             choosefile(directory, question, countIdf)
