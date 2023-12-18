@@ -75,8 +75,8 @@ def refine_files(directory):
     Returns:
         None"""
     for filename in listdir(directory + "\clean"):
-        f = open(directory + "\clean" + "\\" + filename, "r", encoding = "utf-8")
-        f2 = open(directory + "\clean" + "\\" + "refined" + filename, "w", encoding = "utf-8")
+        f = open(directory + "\clean" + "\\" + filename, "r", encoding="utf-8")
+        f2 = open(directory + "\clean" + "\\" + "refined" + filename, "w", encoding="utf-8")
         for line in f:
             for letter in line:
                 if (letter == "à" or letter == "â" or letter == "ç" or letter == "é" or letter == "è" or
@@ -143,13 +143,11 @@ def count_idf(directory):
     idfTotWordCount = {}
     for filename in files_names:
         wordCount = count_words(filename, directory)
-        #print(wordCount)
         for word in wordCount:
             if word in idfTotWordCount:
                 idfTotWordCount[word] += 1
             else:
                 idfTotWordCount[word] = 1
-    #print(idfTotWordCount)
     for word in idfTotWordCount:
         temp = idfTotWordCount[word]
         idfTotWordCount[word] = log(8 / temp, 10)
@@ -175,6 +173,7 @@ def highest_td_idf(directory, countIdf):
     for i in highest:
         print(i)
 
+
 def lowest_td_idf(directory, countIdf):
     """Indicates the words with the lowest td_idf score.
         Parameters:
@@ -190,6 +189,9 @@ def lowest_td_idf(directory, countIdf):
         for i, j in tdIdf.items():
             if j == 0.0 and i not in lowest:
                 lowest.append(i)
+    lowest.remove("france")
+    lowest.remove("histoire")
+    lowest.remove("peuple")
     return lowest
 
 
@@ -214,7 +216,7 @@ def tokenQuestion(question):
             question (str): the question asked by the user
         Returns:
             question (list): the question asked by the user"""
-    if type(question)==str:
+    if type(question) is str:
         question = question.lower()
         question = question.replace("?", "")
         question = question.replace("!", "")
@@ -236,8 +238,7 @@ def wordinQ(directory, question):
             commun (list): the words that are in the question and in the corpus"""
     words = count_words_total(directory)
     commun = []
-    Tquestion = tokenQuestion(question)
-    for cell in Tquestion:
+    for cell in question:
         if cell in words:
             commun.append(cell)
     return commun
@@ -265,19 +266,27 @@ def tfidfQuestion(question, countIdf):
 
 
 def choosefile(directory, question, countIdf):
-    """takes a question as argument and will associate it from the document with the highest tf idf
-    with the words in the question"""
+    """Takes a question as argument and will associate it from the document with the highest tf idf
+    with the words in the question
+        Parameters:
+            directory (str): the directory where the text files are stored
+            question (str): the question asked by the user
+            countIdf (dict): log of the inverse of the number of each word in each file
+        Returns:
+            Prints the chosen file segments for the most important word in the question"""
     question = tokenQuestion(question)
     question = wordinQ(directory, question)
     files_names = []
     for filename in listdir(directory + "\clean"):
         files_names.append(filename)
     tfq = tfidfQuestion(question, countIdf)
-    print(tfq)
     max = [0]
     maxname = [""]
     dangerous = ["quel", "plus", "que", "quel", "qui", "pourquoi", "comment", "ou", "quand", "plus", "president", "de",
-                 "du", "la", "parle", "l", "l'", "mentionne", "mentionner", "parle", "parler", "cela", "celui", "celle","parlé", "mentionné", "liste", "fais", "dis"]
+                 "du", "la", "parle", "l", "l'", "mentionne", "mentionner", "parle", "parler", "cela", "celui", "celle",
+                 "parlé", "mentionné", "liste", "fais", "dis", "premier", "président", "donc", "est", "être", "fait",]
+    nice = ["france", "nation", "climat", "europe", "citoyen", "citoyens", "citoyennes","guerre", "paix", "economie",
+            "économie"]
     lowest = lowest_td_idf(directory, countIdf)
     for word in lowest:
         if word not in dangerous:
@@ -294,18 +303,21 @@ def choosefile(directory, question, countIdf):
         if j == max[0] and i not in temp:
             max.append(j)
             maxname.append(i)
-    maxuse = 0
+    maxuse = -1
     maxuseword = ""
     for word in maxname:
         for filename in files_names:
             if word in count_words(filename, directory):
-                if maxuse<count_words(filename, directory)[word]:
+                if maxuse < count_words(filename, directory)[word]:
                     maxuse = count_words(filename, directory)[word]
                     maxuseword = word
+    for word in nice:
+        if word in tfq:
+            maxuseword = word
     # maxuseword's value is the most important word of the question
     tdidf = []
     filechoosen = ""
-    maxfile = 0
+    maxfile = -1
     for filename in files_names:
         tdidf.append(td_idf(directory, countIdf, filename))
         if maxuseword in tdidf[-1]:
@@ -314,7 +326,6 @@ def choosefile(directory, question, countIdf):
                 filechoosen = filename
     # filechoosen is the filename of the most interesting file
     if filechoosen not in files_names:
-        print(filechoosen, maxuseword)
         print("I'm sorry but the word in the question i thought was important isn't. Please retry :)")
     else:
         filechoosen = filechoosen[7:]
@@ -327,7 +338,7 @@ def choosefile(directory, question, countIdf):
             if maxuseword in sentence.lower():
                 print("Here is the interesting segment n°", i, ":")
                 sentence = sentence.lower()
-                sentence2 = sentence[1].upper()+sentence[2:]
+                sentence2 = sentence[1].upper() + sentence[2:]
                 print(sentence2.strip() + '.')
                 i += 1
                 print()
@@ -369,12 +380,12 @@ def choosefile(directory, question, countIdf):
 
                 #print(round(tdidf[i][j],2), "tdidf[i][j]")
         #print(tdIdfMatrix[k-1],"tdIdfMatrix[k], i & k= ", i, k)
-        #print(tdIdfMatrix[k],"tdIdfMatrix[k], i & k= ", k)       #[0.25, 1.81, 0.3, 0.3, 0.3, 0.9, 0.3, 0.2] tdIdfMatrix[k], i & k=  7 489
+        #print(tdIdfMatrix[k],"tdIdfMatrix[k], i & k= ", k)       #[0.25, 1.81, 0.3, 0.3, 0.3, 0.9, 0.3, 0.2] 
+        #tdIdfMatrix[k], i & k=  7 489
         temp.append(tdIdfMatrix[k])
         k += 1
         if k == 3:
             return temp"""
-
 
 """def similarity(directory, question, countIdf):
     Calculates the cosine similarity between the question and each speech.

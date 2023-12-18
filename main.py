@@ -31,8 +31,8 @@ if __name__ == "__main__":
     print("7. Display the most used word in a specific speech")
     print("8. Display the speeches that contain a specific word")
     print("9. Display the first speeches to talk about a specific topic")
-    print("10. Ask another question")
-    print("11. Count how much a word is said")
+    print("10. Count how much a word is said in all speeches")
+    print("11. Ask antoher question")
     print("12. Exit the program")
     choice = input("Please enter the number of the option you want to choose: ")
     while choice != "12":
@@ -116,10 +116,10 @@ if __name__ == "__main__":
                 print("Sorry, no president talked about this word.")
             else:
                 print(test[0])
-        elif choice == "10":
+        elif choice == "11":
             question = input("Sure ! Enter a question and i'll answer from the speeches !")
             choosefile(directory, question, countIdf)
-        elif choice == "11":
+        elif choice == "10":
             print("Sure ! Here is the number of times a word is said in all speeches:")
             word = input("Please enter the word you want to search: ")
             word = word.lower()
