@@ -21,8 +21,9 @@ if __name__ == "__main__":
                     break
             if temp in filename:
                 pres_dict[name].append(filename)
-    print(similarity(directory,"Peux-tu me dire comment une nation "
-                        "peut-elle prendre soin du climat ?", countIdf))
+    #print(cosine_similarity([2,3,4],[2,2,4]))
+    #print(similarity(directory,"Peux-tu me dire comment une nation peut-elle prendre soin du climat ?", countIdf))
+    choosefile(directory,"Peux-tu me dire comment une nation peut-elle prendre soin du climat ?", countIdf)
     print("Welcome to the French Presidents' Speeches Analysis Program!")
     print("You can choose between the following options:")
     print("1. Display the names of the studied presidents")

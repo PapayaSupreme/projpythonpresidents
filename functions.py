@@ -206,15 +206,15 @@ def td_idf(directory, countIdf, filename):
     return tdIdf
 
 
-def td_idf_matrix(directory, countIdf):
-    """Creates a matrix with as many columns as files and as many rows as unique words,
+"""def td_idf_matrix(directory, countIdf):
+    Creates a matrix with as many columns as files and as many rows as unique words,
         containing the tf-idf score of each word in each file.
         Parameters:
             directory (str): the directory where the text files are stored
         Returns:
-            td_idf_matrix (list): the tf-idf score of each word in each file"""
+            td_idf_matrix (list): the tf-idf score of each word in each file
 
-    tdIdfMatrix = [[0.0]*8] * 1685      #works
+    tdIdfMatrix = [[[0.0]*8] * 1685]      #works
     files_names,words = [],[]
     tdidf = [0]*8
     temp = []
@@ -223,8 +223,6 @@ def td_idf_matrix(directory, countIdf):
     for i in range(8):
         tdidf[i] = (td_idf(directory, countIdf, files_names[i]))   #8 dict ina list for each tdidf
         words.append(count_words(files_names[i], directory))        #8 dict ina list for each wordcount
-    for e in tdidf:
-        print(e)
     listepitie = count_words_total(directory)              #dict of total wordcount
     #print(tdidf[2])
     #print("TDIDF")
@@ -239,13 +237,17 @@ def td_idf_matrix(directory, countIdf):
             #print("j = ", j)
             #print(j in words[i])
             if j in words[i]:   #if the word is in the speech
-                tdIdfMatrix[k][i] = round(tdidf[i][j],2)
+                tdIdfMatrix[k].append(round(tdidf[i][j],2))
+            else:
+                
                 #print(round(tdidf[i][j],2), "tdidf[i][j]")
         #print(tdIdfMatrix[k-1],"tdIdfMatrix[k], i & k= ", i, k)
-        print(tdIdfMatrix[k],"tdIdfMatrix[k], i & k= ", k)       #[0.25, 1.81, 0.3, 0.3, 0.3, 0.9, 0.3, 0.2] tdIdfMatrix[k], i & k=  7 489
+        #print(tdIdfMatrix[k],"tdIdfMatrix[k], i & k= ", k)       #[0.25, 1.81, 0.3, 0.3, 0.3, 0.9, 0.3, 0.2] tdIdfMatrix[k], i & k=  7 489
         temp.append(tdIdfMatrix[k])
         k += 1
-    return temp
+        if k == 3:
+            return temp"""
+
 
 def tokenQuestion(question):
     """Transforms the question into a list of words.
@@ -253,15 +255,16 @@ def tokenQuestion(question):
             question (str): the question asked by the user
         Returns:
             question (list): the question asked by the user"""
-    question = question.lower()
-    question = question.replace("?", "")
-    question = question.replace("!", "")
-    question = question.replace(".", "")
-    question = question.replace(",", "")
-    question = question.replace("'", " ")
-    question = question.replace("-", " ")
-    question = question.replace("’", " ")
-    question = question.split()
+    if type(question)==str:
+        question = question.lower()
+        question = question.replace("?", "")
+        question = question.replace("!", "")
+        question = question.replace(".", "")
+        question = question.replace(",", "")
+        question = question.replace("'", " ")
+        question = question.replace("-", " ")
+        question = question.replace("’", " ")
+        question = question.split()
     return question
 
 def wordinQ(directory,question):
@@ -279,44 +282,105 @@ def wordinQ(directory,question):
             commun.append(cell)
     return commun
 
+
 def tfidfQuestion(question, countIdf):
-    question = tokenQuestion(question)
+    """Calculates the tf-idf score of each word in the question.
+        Parameters:
+            question (list): the question asked by the user with only the words that are in the corpus
+            countIdf (dict): log of the inverse of the number of each word in each file
+        Returns:
+            tfQ (dict): the tf-idf score of each word in the question"""
     tfQ = {}
     for cell in question:
         if cell in tfQ:
             tfQ[cell] += 1
         else:
             tfQ[cell] = 1
-
     for cell in tfQ:
         if cell in countIdf:
-            tfQ[cell] = tfQ[cell]/len(question) * countIdf[cell]
+            tfQ[cell] = tfQ[cell] / len(question) * countIdf[cell]
         else:
             tfQ[cell] = 0
     return tfQ
+
 
 def similarity(directory, question, countIdf):
     """Calculates the cosine similarity between the question and each speech.
         Parameters:
             directory (str): the directory where the text files are stored
-            question (list): the question asked by the user
+            question (str): the question asked by the user
             countIdf (dict): log of the inverse of the number of each word in each file
         Returns:
             similarity (list): the cosine similarity between the question and each speech"""
-    tfidfQ= tfidfQuestion(question, countIdf)
-    tdidfC=[0]*8
+    similarity = []
     files_names = []
     for filename in listdir(directory + "\clean"):
         files_names.append(filename)
-    for i in range(8):
-        tdidfC[i] = (td_idf(directory, countIdf, files_names[i]))
-    """for e in tdidfC:
-        print(e)"""
-    matrix =
-    similarity = {}
-    for i in range(8):
-        similarity[files_names[i]] = cosine_similarity
+    tfQ = tfidfQuestion(wordinQ(directory,tokenQuestion(question)), countIdf)
+    for filename in files_names:
+        tfIdf = td_idf(directory, countIdf, filename)
+        tfIdfQ = tfidfQuestion(question, countIdf)
+        print(tfIdfQ)
+        print(len(tfIdf.values()))
+        print(len(tfIdfQ.values()))
+        similarity.append(cosine_similarity(list(tfIdf.values()), list(tfIdfQ.values())))
     return similarity
+
+
+def choosefile(directory, question, countIdf):
+    """takes a question as argument and will associate it from the document with the highest tf idf
+    with the words in the question"""
+    question = tokenQuestion(question)
+    question = wordinQ(directory, question)
+    files_names = []
+    for filename in listdir(directory + "\clean"):
+        files_names.append(filename)
+    tfq = tfidfQuestion(question, countIdf)
+    max = [0]
+    maxname = [""]
+    for i,j in tfq.items():
+        if j > max[0]:
+            max[0] = j
+            maxname[0] = i
+    temp = maxname[0]
+    for i,j in tfq.items():
+        if j == max[0] and i not in temp :
+            max.append(j)
+            maxname.append(i)
+    print(max, maxname)
+    maxuse = 0
+    maxuseword = ""
+    for word in maxname:
+        for filename in files_names:
+            if word in count_words(filename, directory):
+                if maxuse<count_words(filename, directory)[word]:
+                    maxuse = count_words(filename, directory)[word]
+                    maxuseword = word
+    # maxuseword's value is the most important word of the question
+    tdidf = []
+    filechoosen = ""
+    maxfile = 0
+    for filename in files_names:
+        tdidf.append(td_idf(directory, countIdf, filename))
+        if maxuseword in tdidf[-1]:
+            if tdidf[-1][maxuseword]>maxfile:
+                maxfile = tdidf[-1][maxuseword]
+                filechoosen = filename
+    # filechoosen is the filename of the most interesting file
+    filechoosen = filechoosen[7:]
+    print(filechoosen)
+    f = open(directory + "\speeches" + "\\" + filechoosen, "r", encoding="utf-8")
+    content = f.read()
+    sentences = content.split('.')
+    for sentence in sentences:
+        if maxuseword in sentence.lower():
+            print(sentence.strip() + '.')
+
+
+
+
+
+
 
 def scalar_product(vectorA,vectorB):
     """Returns the scalar product of the two vectors.
@@ -329,6 +393,7 @@ def scalar_product(vectorA,vectorB):
         scalar += vectorA[i]*vectorB[i]
     return scalar
 
+
 def norm(vector):
     """Returns the norm of the vector.
         Parameters:
@@ -339,6 +404,7 @@ def norm(vector):
     for i in range(len(vector)):
         norm += vector[i]**2
     return norm**(1/2)
+
 
 def cosine_similarity(vectorA, vectorB):
     """Returns the cosine similarity between the two vectors.
