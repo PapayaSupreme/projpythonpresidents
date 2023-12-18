@@ -2,10 +2,10 @@ from functions import *
 
 if __name__ == "__main__":
     directory = getcwd()
-    countIdf = count_idf(directory)     # messieurs': 0.2041199826559248, 'les': 0.0, 'présidents': 0.6020599913279623, 'mesdames': 0.057991946977686726, 'en': 0.0, 'ce': 0.0,
     if not path.isdir(directory + "\clean"):        # if clean folder doesn't exist, create it
         clean_files(directory)
         refine_files(directory)
+    countIdf = count_idf(directory)
     files_names = pres_names(directory + "/speeches")  # raw list of speeches names
     pres_dict = {}  # list of presidents names linked with their speeches filenames
     for name in names(files_names):
@@ -26,8 +26,8 @@ if __name__ == "__main__":
     print("3. Display the idf score of the words used by presidents")
     print("4. Display the least important words in all speeches")
     print("5. Display the most important words in all speeches")
-    print("6. Display the most used words in all speeches")
-    print("7. Display the most used words in a specific speech")
+    print("6. Display the most used word in all speeches")
+    print("7. Display the most used word in a specific speech")
     print("8. Display the speeches that contain a specific word")
     print("9. Display the first speeches to talk about a specific topic")
     print("10. Ask another question")
@@ -47,7 +47,9 @@ if __name__ == "__main__":
             print(countIdf)
         elif choice == "4":
             print("Sure ! Here are the least important words in all speeches:")
-            lowest_td_idf(directory, countIdf)
+            lowest = lowest_td_idf(directory, countIdf)
+            for i in lowest:
+                print(i)
             print("These words are not important, meaning that their tf-idf "
                   "score is 0!")
         elif choice == "5":

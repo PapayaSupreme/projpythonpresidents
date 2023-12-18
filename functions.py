@@ -190,8 +190,7 @@ def lowest_td_idf(directory, countIdf):
         for i, j in tdIdf.items():
             if j == 0.0 and i not in lowest:
                 lowest.append(i)
-    for i in lowest:
-        print(i)
+    return lowest
 
 
 def td_idf(directory, countIdf, filename):
@@ -274,9 +273,15 @@ def choosefile(directory, question, countIdf):
     for filename in listdir(directory + "\clean"):
         files_names.append(filename)
     tfq = tfidfQuestion(question, countIdf)
+    print(tfq)
     max = [0]
     maxname = [""]
-    dangerous = ["quel", "plus", "que", "quel", "qui", "pourquoi", "comment", "ou", "quand", "plus", "president"]
+    dangerous = ["quel", "plus", "que", "quel", "qui", "pourquoi", "comment", "ou", "quand", "plus", "president", "de",
+                 "du", "la", "parle", "l", "l'"]
+    lowest = lowest_td_idf(directory, countIdf)
+    for word in lowest:
+        if word not in dangerous:
+            dangerous.append(word)
     for word in dangerous:
         if word in tfq:
             del tfq[word]
@@ -308,19 +313,24 @@ def choosefile(directory, question, countIdf):
                 maxfile = tdidf[-1][maxuseword]
                 filechoosen = filename
     # filechoosen is the filename of the most interesting file
-    filechoosen = filechoosen[7:]
-    print("I've found that the file", filechoosen, "was talking the most about", maxuseword, ":")
-    f = open(directory + "\speeches" + "\\" + filechoosen, "r", encoding="utf-8")
-    content = f.read()
-    sentences = content.split('.')
-    i = 1
-    for sentence in sentences:
-        if maxuseword in sentence.lower():
-            print("Here is the interesting segment n°", i, ":")
-            sentence = sentence.lower()
-            print(sentence.strip() + '.')
-            i += 1
-            print()
+    if filechoosen not in files_names:
+        print(filechoosen, maxuseword)
+        print("I'm sorry but the word in the question i thought was important isn't. Please retry :)")
+    else:
+        filechoosen = filechoosen[7:]
+        print("I've found that the file", filechoosen, "was talking the most about", maxuseword, ":")
+        f = open(directory + "\speeches" + "\\" + filechoosen, "r", encoding="utf-8")
+        content = f.read()
+        sentences = content.split('.')
+        i = 1
+        for sentence in sentences:
+            if maxuseword in sentence.lower():
+                print("Here is the interesting segment n°", i, ":")
+                sentence = sentence.lower()
+                sentence2 = sentence[1].upper()+sentence[2:]
+                print(sentence2.strip() + '.')
+                i += 1
+                print()
 
 
 """def td_idf_matrix(directory, countIdf):
