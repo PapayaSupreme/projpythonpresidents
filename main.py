@@ -125,7 +125,7 @@ if __name__ == "__main__":
             word = word.lower()
             print("Here is the number of times the word", word, "is said in all speeches :", end=" ")
             temp = count_words_total(directory)
-            if temp[word] == 0:
+            if word not in temp:
                 print()
                 print("Sorry, no president talked about this word.")
             else:
@@ -133,6 +133,7 @@ if __name__ == "__main__":
         else:
             print("Sorry, this is not a valid option.")
         choice = input("Please enter the number of the option you want to choose: ")
+    print("Thank you for using the French Presidents' Speeches Analysis Program!")
 
 
 
