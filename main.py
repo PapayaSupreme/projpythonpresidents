@@ -2,9 +2,7 @@ from functions import *
 
 if __name__ == "__main__":
     directory = getcwd()
-    countIdf = count_idf(directory)     #messieurs': 0.2041199826559248, 'les': 0.0, 'présidents': 0.6020599913279623, 'mesdames': 0.057991946977686726, 'en': 0.0, 'ce': 0.0,
-    #print(td_idf(directory, countIdf, "refinedNomination_Chirac1.txt"))             #td_idf : messieurs': 0.4082399653118496, 'les': 0.0, 'présidents': 0.6020599913279623, 'mesdames': 0.057991946977686726,
-    #e = td_idf_matrix(directory, countIdf)
+    countIdf = count_idf(directory)     # messieurs': 0.2041199826559248, 'les': 0.0, 'présidents': 0.6020599913279623, 'mesdames': 0.057991946977686726, 'en': 0.0, 'ce': 0.0,
     if not path.isdir(directory + "\clean"):        # if clean folder doesn't exist, create it
         clean_files(directory)
         refine_files(directory)
@@ -21,9 +19,6 @@ if __name__ == "__main__":
                     break
             if temp in filename:
                 pres_dict[name].append(filename)
-    #print(cosine_similarity([2,3,4],[2,2,4]))
-    #print(similarity(directory,"Peux-tu me dire comment une nation peut-elle prendre soin du climat ?", countIdf))
-    choosefile(directory,"Peux-tu me dire comment une nation peut-elle prendre soin du climat ?", countIdf)
     print("Welcome to the French Presidents' Speeches Analysis Program!")
     print("You can choose between the following options:")
     print("1. Display the names of the studied presidents")
@@ -35,9 +30,10 @@ if __name__ == "__main__":
     print("7. Display the most used words in a specific speech")
     print("8. Display the speeches that contain a specific word")
     print("9. Display the first speeches to talk about a specific topic")
-    print("10. Exit the program")
+    print("10. Ask another question")
+    print("11. Exit the program")
     choice = input("Please enter the number of the option you want to choose: ")
-    while choice != "10":
+    while choice != "11":
         if choice == "1":
             print("Sure ! Here are the names of the presidents:")
             temp = names(pres_names(directory + "/speeches"))
@@ -93,14 +89,19 @@ if __name__ == "__main__":
         elif choice == "9":
             print("Sure ! Here is the first speech to talk about a specific topic:")
             word = input("Please enter the word you want to search: ")
-            print("Here is the president that contained that talked about", word, "the first :")
+            print("Here is the president that talked about", word, "the first :")
+            notyet = True
+            test = []
             for filename in listdir(directory + "\clean"):
                 if word in count_words(filename, directory):
                     for i, j in pres_dict.items():
                         for k in j:
-                            if k in filename:
-                                print(i)
-                                break
+                            if k in filename and notyet:
+                                test.append(i)
+            print(test[-1])
+        elif choice == "10":
+            question = input("Sure ! Enter a question and i'll answer from the speeches !")
+            choosefile(directory, question, countIdf)
         else:
             print("Sorry, this is not a valid option.")
         choice = input("Please enter the number of the option you want to choose: ")
