@@ -5,8 +5,7 @@ if __name__ == "__main__":
     if not path.isdir(directory + "\clean"):        # if clean folder doesn't exist, create it
         clean_files(directory)
         refine_files(directory)
-    countIdf = count_idf(directory)
-    print(max(countIdf.values()))
+    countIdf = count_idf(directory)  # dictionary of words and their idf score4
     files_names = pres_names(directory + "/speeches")  # raw list of speeches names
     pres_dict = {}  # list of presidents names linked with their speeches filenames
     for name in names(files_names):
@@ -25,8 +24,8 @@ if __name__ == "__main__":
     print("1. Display the names of the studied presidents")
     print("2. Display all the words used in speeches and their count")
     print("3. Display the idf score of the words used by presidents")
-    print("4. Display the least important words in all speeches")
-    print("5. Display the most important words in all speeches")
+    print("4. Display the least important word(s) in all speeches")
+    print("5. Display the most important word(s) in all speeches")
     print("6. Display the most used word in all speeches")
     print("7. Display the most used word in a specific speech")
     print("8. Display the speeches that contain a specific word")
@@ -62,13 +61,13 @@ if __name__ == "__main__":
             highest_td_idf(directory, countIdf)
             print("These words are important because they are used in only one speech !")
         elif choice == "6":
-            print("Sure ! Here are the most used words in all speeches:")
+            print("Sure ! Here is the most used word in all speeches:")
             temp = max(count_words_total(directory).values())
             for i, j in count_words_total(directory).items():
                 if temp == j:
                     print(i, ":", j)
         elif choice == "7":
-            print("Sure ! Here are the most used words in a specific speech:")
+            print("Sure ! Here is the most used word in a specific speech:")
             print("Here are the names of the speeches:")
             for filename in listdir(directory + "\clean"):
                 print(filename)
@@ -77,7 +76,7 @@ if __name__ == "__main__":
                 filename = input("Please enter the name of the speech you want to analyze: ")
                 if filename not in listdir(directory + "\clean"):
                     print("Sorry, this is not a valid option.")
-            print("Here are the most used words in the speech", filename, ":")
+            print("Here is the most used word in the speech", filename, ":")
             temp = max(count_words(filename, directory).values())
             for i, j in count_words(filename, directory).items():
                 if temp == j:
