@@ -83,7 +83,7 @@ def refine_files(directory):
                         letter == "ê" or letter == "ë" or letter == "î" or letter == "ï" or letter == "ô" or
                         letter == "ö" or letter == "ù" or letter == "û" or letter == "ü" or letter == "œ"):
                     f2.write(letter)
-                elif letter == "'" or letter == "’" or letter == "-" or letter == ".":
+                elif letter == "'" or letter == "’" or letter == "-" or letter == "." or letter == "," or letter == "!" or letter == "?":
                     f2.write(" ")
                 elif 97 <= ord(letter) <= 122 or ord(letter) == 32 or 48 <= ord(letter) <= 57:
                     f2.write(letter)
@@ -284,9 +284,10 @@ def choosefile(directory, question, countIdf):
     maxname = [""]
     dangerous = ["quel", "plus", "que", "quel", "qui", "pourquoi", "comment", "ou", "quand", "plus", "president", "de",
                  "du", "la", "parle", "l", "l'", "mentionne", "mentionner", "parle", "parler", "cela", "celui", "celle",
-                 "parlé", "mentionné", "liste", "fais", "dis", "premier", "président", "donc", "est", "être", "fait",]
+                 "parlé", "mentionné", "liste", "fais", "dis", "premier", "président", "donc", "est", "être", "fait",
+                 "personne", "donc", "ayant", "à", "a", "avoir", "avait"]
     nice = ["france", "nation", "climat", "europe", "citoyen", "citoyens", "citoyennes","guerre", "paix", "economie",
-            "économie"]
+            "économie", "femmes", "environnement", "écologie", "ecologie"]
     lowest = lowest_td_idf(directory, countIdf)
     for word in lowest:
         if word not in dangerous:
