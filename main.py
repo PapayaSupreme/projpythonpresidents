@@ -25,8 +25,6 @@ if __name__ == "__main__":
         print("=====================================================================")
         print("|   Welcome to the French Presidents' Speeches Analysis Program!    |")
         print("=====================================================================")
-        print()
-        print("You can choose between the following options:")
         print("=====================================================================")
         print("| 1 | Display the names of the studied presidents                   |")
         print("| 2 | Display all the words used in speeches and their count        |")
@@ -96,8 +94,9 @@ if __name__ == "__main__":
                     for cell in temp:
                         if k in cell and i not in temp2:
                             temp2.append(i)
+            if len(temp2)>=1:
+                print("Here are the presidents that told the word", word, ":")
             for cell in temp2:
-                print("Here are the president that told the word ", word, ":")
                 print(cell)
             if not temp2:
                 print("Sorry, no president told this word.")
@@ -132,9 +131,8 @@ if __name__ == "__main__":
             else:
                 print(temp[word])
         else:
+            print()
             print("Sorry, this is not a valid option.")
-        print()
-        print("=====================================================================")
     print("Thank you for using the French Presidents' Speeches Analysis Program!")
 
 
