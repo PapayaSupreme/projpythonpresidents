@@ -19,21 +19,28 @@ if __name__ == "__main__":
                     break
             if temp in filename:
                 pres_dict[name].append(filename)
-    print("Welcome to the French Presidents' Speeches Analysis Program!")
-    print("You can choose between the following options:")
-    print("1. Display the names of the studied presidents")
-    print("2. Display all the words used in speeches and their count")
-    print("3. Display the least important word(s) in all speeches")
-    print("4. Display the most important word(s) in all speeches")
-    print("5. Display the most used word in all speeches")
-    print("6. Display the most used word in a specific speech")
-    print("7. Display the presidents that told a specific word")
-    print("8. Display the first speeches to talk about a specific topic")
-    print("9. Count how much a word is said in all speeches")
-    print("10. Ask antoher question")
-    print("11. Exit the program")
-    choice = input("Please enter the number of the option you want to choose: ")
+    choice = ""
     while choice != "11":
+        print()
+        print("=====================================================================")
+        print("|   Welcome to the French Presidents' Speeches Analysis Program!    |")
+        print("=====================================================================")
+        print()
+        print("You can choose between the following options:")
+        print("=====================================================================")
+        print("| 1 | Display the names of the studied presidents                   |")
+        print("| 2 | Display all the words used in speeches and their count        |")
+        print("| 3 | Display the least important word(s) in all speeches           |")
+        print("| 4 | Display the most important word(s) in all speeches            |")
+        print("| 5 | Display the most used word in all speeches                    |")
+        print("| 6 | Display the most used word in a specific speech               |")
+        print("| 7 | Display the presidents that told a specific word              |")
+        print("| 8 | Display the first speeches to talk about a specific topic     |")
+        print("| 9 | Count how much a word is said in all speeches                 |")
+        print("| 10| Ask another question                                          |")
+        print("| 11| Exit the program                                              |")
+        print("=====================================================================")
+        choice = input("Please enter the number of the option you want to choose: ")
         if choice == "1":
             print("Sure ! Here are the names of the presidents:")
             temp = names(pres_names(directory + "/speeches"))
@@ -126,7 +133,8 @@ if __name__ == "__main__":
                 print(temp[word])
         else:
             print("Sorry, this is not a valid option.")
-        choice = input("Please enter the number of the option you want to choose: ")
+        print()
+        print("=====================================================================")
     print("Thank you for using the French Presidents' Speeches Analysis Program!")
 
 
