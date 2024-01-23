@@ -1,6 +1,6 @@
 # projpythonpresidents
 
-Pseduo-AI Chatbot for an EFREI project
+Pseudo-AI Chatbot for an EFREI project
 
 Running requirements :
 - Architecture x86 or ARM64 ; at least 128 Mb of RAM
